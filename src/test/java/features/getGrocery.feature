@@ -43,8 +43,21 @@ Feature: Grocery API
     And path '/add'
     And request jsonBody
     When method post
-    Then status 200
+    Then status 201
     And response.message == "success"
+
+  Scenario: Send an invalid payload while adding a new product
+    Given path '/add'
+    When method post
+    Then status 400
+    And response.message == "Request body has invalid format."
+
+  Scenario: Search the product that has not found
+    Given header Content-Type = 'application/json'
+    And path '/allGrocery/cherry'
+    When method get
+    Then status 404
+    And match response.message == "The product has not found"
 
 
     
